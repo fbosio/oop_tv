@@ -18,8 +18,11 @@ class OopTv(QWidget):
         `pixmaps`: sequence of corresponding QPixmap objects
         `debug`: whether the app prints text in console or not
     """
-    def __init__(self, names, pixmaps, title, debug):
+    def __init__(self, names, pixmaps, title, geometry, debug):
         super().__init__(windowTitle=title)
+        if geometry is not None:
+            self.setGeometry(QRect(*geometry))
+
         self.pixmaps = dict(zip(names, pixmaps))
         self.tv = TV()
         self.panel = Panel(self, self.tv, debug)
@@ -112,6 +115,9 @@ parser = argparse.ArgumentParser(description='A little PyQt5 app to teach how '
                                  'instances work in Object Oriented '
                                  'Programming. ')
 DEFAULT_NAME = 'my_television_instance'
+parser.add_argument('-g', '--geometry', type=int,
+                    nargs=4, metavar=('X', 'Y', 'WIDTH', 'HEIGHT'),
+                    help='position of the window on screen')
 parser.add_argument('-n', '--name', default=DEFAULT_NAME,
                     help='name of your Television object instance.\n'
                     'This name is placed as the window title of the app '
@@ -119,8 +125,8 @@ parser.add_argument('-n', '--name', default=DEFAULT_NAME,
 parser.add_argument('-v', '--verbose', action='store_true',
                     help="show what's going on behind the scenes")
 args = parser.parse_args()
-debug = args.verbose
-title = args.name
+options = {'debug': args.verbose, 'geometry': args.geometry,
+           'title': args.name}
 
 # IPython compatibility
 app = QCoreApplication.instance()
@@ -135,7 +141,7 @@ pixmaps = []
 for name in names:
     pixmaps.append(QPixmap(folder + name))
 
-window = OopTv(names, pixmaps, debug=debug, title=title)
+window = OopTv(names, pixmaps, **options)
 
 for pixmap, name in zip(pixmaps, names):
     if pixmap.isNull():
