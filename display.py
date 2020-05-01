@@ -56,6 +56,7 @@ class ChannelNumber:
 
             if self._prev_channel != channel:
                 self.visible = True
+                self._prev_channel = channel
                 self.timer.start(2000)
         else:
             self._was_on = False
