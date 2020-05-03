@@ -34,7 +34,7 @@ class ChannelNumber:
 
         if self.tv.is_on():
             if not self._was_on:
-                self.visible = True
+                self.show()
                 self._was_on = True
 
             if self.visible:
@@ -55,11 +55,16 @@ class ChannelNumber:
                 qp.drawText(rect, Qt.AlignRight | Qt.AlignVCenter, text)
 
             if self._prev_channel != channel:
-                self.visible = True
+                self.show()
+                self.window.update()
                 self._prev_channel = channel
-                self.timer.start(2000)
         else:
             self._was_on = False
+
+    def show(self):
+        """Activate channel number displaying."""
+        self.visible = True
+        self.timer.start(2000)
 
     def hide(self):
         """Timer callback."""
