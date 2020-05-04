@@ -8,7 +8,7 @@ def options():
     parser = argparse.ArgumentParser(description='A little PyQt5 app to teach '
                                      'how instances work in Object Oriented '
                                      'Programming. ')
-    parser.add_argument('-g', '--geometry', type=int,
+    parser.add_argument('-g', '--geometry', type=float,
                         nargs=4, metavar=('X', 'Y', 'WIDTH', 'HEIGHT'),
                         help='position of the window on screen')
     parser.add_argument('-n', '--name', default=DEFAULT_NAME,
