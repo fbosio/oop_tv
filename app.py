@@ -13,7 +13,7 @@ class OopTv(QWidget):
     Input:
         `names`: sequence of image names (str)
         `pixmaps`: sequence of corresponding QPixmap objects
-        `debug`: whether the app prints text in console or not
+        `options`: dictionary with keys that correspond to the cli args
     """
     def __init__(self, names, pixmaps, options):
         super().__init__(windowTitle=options['title'])
