@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import subprocess
+import sys
 from PyQt5.QtGui import QGuiApplication, QImage
 
 
@@ -22,5 +23,5 @@ height = width*ratio
 y = geometry.height() + ratio*(x-geometry.width())
 
 for i, name in enumerate(names):
-    subprocess.Popen(['./main.py', '-n', name, '-g', f'{i*x}', f'{i*y}',
-                      f'{width}', f'{height}'])
+    subprocess.Popen([sys.executable, 'main.py', '-n', name, '-g',
+                     f'{i*x}', f'{i*y}', f'{width}', f'{height}'])
