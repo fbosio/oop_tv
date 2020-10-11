@@ -8,20 +8,20 @@ app = QGuiApplication([])
 geometry = app.primaryScreen().availableGeometry()
 
 image = QImage('img/tvfg.png')
-ratio = image.height() / image.width()
+ratio = image.width() / image.height()
 
-names = 'be_in_my_video', 'i_am_the_slime'
-N = len(names)
+names = 'be_in_my_video', 'i_am_the_slime', 'the_radio_is_broken'
 
-if geometry.height() >= geometry.width() * ratio:
-    width = geometry.width() / (N*ratio)
-    x = geometry.width() - geometry.height()/(N*ratio)
-else:
-    width = geometry.width() / N
-    x = geometry.width() / N
-height = width*ratio
-y = geometry.height() + ratio*(x-geometry.width())
+width = min(min(geometry.width(), geometry.height() * ratio),
+            max(geometry.width(), geometry.height() * ratio) / len(names))
+height = width / ratio
 
 for i, name in enumerate(names):
+    x = y = 0
+    if geometry.width() >= geometry.height() * ratio:
+        x = i * min(geometry.width()/len(names), geometry.height()*ratio)
+    else:
+        y = i * min(geometry.width()/ratio, geometry.height()/len(names))
+    print(x, y)
     subprocess.Popen([sys.executable, 'main.py', '-n', name, '-g',
-                     f'{i*x}', f'{i*y}', f'{width}', f'{height}'])
+                     f'{x}', f'{y}', f'{width}', f'{height}'])
