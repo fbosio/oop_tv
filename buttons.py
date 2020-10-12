@@ -27,7 +27,6 @@ class Panel:
         width = 0.0375
         height = self.bottom - self.top
         self.buttons = []
-
         for i in range(5):
             x = self.left + i*width
             rect = QRectF(x, self.top, width, height)
@@ -76,7 +75,6 @@ class Panel:
 
         self.buttons[3].bind(channel_up)
         self.buttons[4].bind(channel_down)
-
         self.buttons[-1].bind(big_button_callback)
 
 

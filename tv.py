@@ -1,9 +1,12 @@
 class TV:
-    """A television."""
-    def __init__(self):
+    """A television.
+
+        number_channels: the number of channels this TV has.
+    """
+    def __init__(self, number_channels):
         self._on = False
         self._channel = 0
-        self._channels = 4
+        self._channels = number_channels
 
     def power(self):
         """Toggle between `on' and `off' states."""

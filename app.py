@@ -22,16 +22,6 @@ class OopTv(QWidget):
             self.setGeometry(QRect(*geometry))
 
         debug = options['debug']
-        self.pixmaps = dict(zip(names, pixmaps))
-        self.tv = TV()
-        self.panel = Panel(self, self.tv, debug)
-
-        # Order pixmaps according to channels
-        self._contents = pixmaps[1:]
-
-        # Display channel number
-        self.channel_number = ChannelNumber(self, self.tv, debug)
-
         if debug:
             print('Loaded.')
             print('You can click on the screen to get the mouse position.')
@@ -39,6 +29,18 @@ class OopTv(QWidget):
                   'width,')
             print(' `y` is expressed as a percentage of the height.')
         self.debug = debug
+
+        self.pixmaps = dict(zip(names, pixmaps))
+        self.tv = TV(number_channels=len(self.pixmaps)-1)
+
+        # Order pixmaps according to channels
+        self._contents = pixmaps[1:]
+
+        # Display channel number
+        self.channel_number = ChannelNumber(self, self.tv, debug)
+
+        # Button panel
+        self.panel = Panel(self, self.tv, debug)
 
     def paintEvent(self, event):
         """Paint cute things, internal use."""
@@ -52,7 +54,7 @@ class OopTv(QWidget):
         # Paint screen
         qp = QPainter()
         qp.begin(self)
-        self._paint(screen, qp)
+        self._paint_screen(screen, qp)
         self.channel_number.paint(qp)
         pixmap = self.pixmaps['tvfg.png']
         qp.drawPixmap(QRect(0, 0, w, h), pixmap,
@@ -61,7 +63,7 @@ class OopTv(QWidget):
         self.panel.paint(qp)
         qp.end()
 
-    def _paint(self, screen, qp):
+    def _paint_screen(self, screen, qp):
         """Paint TV screen.
 
         Subroutine, internal use.
@@ -103,7 +105,7 @@ class OopTv(QWidget):
         x, y = event.x(), event.y()
         self.panel.event(x, y)
 
-        # buttons() method gives a flag, which should be filtered by bitmasking
+        # buttons() method gives a flag, which is filtered by bitmasking
         if self.debug and event.buttons() & Qt.LeftButton:
             print(f'Clicked at ({100 * x / self.width():.4f}% of width, '
                   f'{100 * y / self.height():.4f}% of height)')
